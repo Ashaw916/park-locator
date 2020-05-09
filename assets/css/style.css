@@ -1,0 +1,21 @@
+body {
+    /*background-image: url('assets/image/park.png');*/
+   /* background-repeat: no-repeat;*/
+    
+}
+
+#header {
+    background-color: rgb(73, 116, 73);
+    margin: 0 0 1rem 0;
+    padding: 2rem;
+}
+#header h1 {
+    font-size: 7rem;
+    color: white;
+}
+.search {
+    background-color: rgb(181, 181, 181);
+    padding: 2rem 0rem;
+    margin: 1rem 1rem;
+    
+}
