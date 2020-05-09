@@ -1,16 +1,15 @@
-body {
-    /*background-image: url('assets/image/park.png');*/
-   /* background-repeat: no-repeat;*/
+/* body {
+   background-image: url('assets/image/park.png');
+    background-repeat: no-repeat;
     
-}
+} */
 
 #header {
     background-color: rgb(73, 116, 73);
     margin: 0 0 1rem 0;
-    padding: 2rem;
 }
 #header h1 {
-    font-size: 7rem;
+    font-size: 4rem;
     color: white;
 }
 .search {
@@ -21,6 +20,49 @@ body {
 }
 #map {
     justify-content: center;
-    width: 100rem;
-    height: 40rem;
+    position: fixed; 
+    top: 14rem; 
+    bottom: 0; 
+    left: 26%;
+    right: 1rem;
+
+}
+/* .map {
+    border-left: 1px solid #fff;
+    position: absolute;
+    left: 33.3333%;
+    width: 66.6666%;
+
+    top: 0;
+    bottom: 0;
+    border: solid darkgray 1px;
+  } */
+#info {
+    display: block;
+    position: relative;
+    margin: 0px auto;
+    width: 50%;
+    padding: 10px;
+    border: solid darkgray 1px;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: center;
+    color: #222;
+    background: #fff;
+    }
+
+.sidebar {
+    position: fixed;
+    top: 14rem; 
+    bottom: 0; 
+    left:1rem;
+    right: 75%;
+    border: solid darkgray 1px;
+    
+}
+.pad2 {
+padding: 20px;
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
 }
