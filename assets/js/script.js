@@ -8,48 +8,41 @@ $(document).ready(function () {
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/light-v10',
-        center: [-77.034084, 38.909671],
+        center: [125.6, 10.1],
         zoom: 14
       });
 
     //array of park object
     var parks = {
         "type": "FeatureCollection",
-        "features": 
-        [
-        { 
-            "type": "Feature",
-            "geometry": 
-            {
-              "type": "Point",
-              "coordinates": [
-                -77.034084142948,
-                38.909671288923]
-            },
-            "properties": 
-            {
-              "phoneFormatted": "(202) 234-7336",
-              "phone": "2022347336",
-              "address": "1471 P St NW",
-              "city": "Washington DC",
-              "country": "United States",
-              "crossStreet": "at 15th St NW",
-              "postalCode": "20005",
-              "state": "D.C."
-            }
-        },
-        {
+        "features": [
+            { 
             "type": "Feature",
             "geometry": {
               "type": "Point",
-              "coordinates": [125.6, 10.1]
+              "coordinates": [-77.034084142948,38.909671288923]
             },
             "properties": {
-              "name": "Dinagat Islands"
+                "name": "gilman",
+                "address": "924 gilman st",
+                "city": "berkeley DC",
+                "country": "United States",
+                "crossStreet": "at 15th St NW",
+                "postalCode": "20005",
+                "state": "ca"
+            }
+             },
+            {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [125.6, 10.1]
+            },
+            "properties": {
+                "name": "Dinagat Islands"
             }
           }
-        ]
-        };
+        ]};
 
         //on load fuction to populate map
         map.on('load', function (e) {
@@ -90,25 +83,22 @@ $(document).ready(function () {
           /* Assign the `item` class to each listing for styling. */
           listing.className = 'item';
       
-          /* Add the link to the individual listing created above. */
-          var link = listing.appendChild(document.createElement('a'));
-          link.href = '#';
-          link.className = 'title';
-          link.id = "link-" + prop.id;
-          link.innerHTML = prop.address;
-      
           /* Add details to the individual listing. */
           var details = listing.appendChild(document.createElement('div'));
           details.innerHTML = prop.name;
+
+          /* Add the link to the individual listing created above. */
+          var link = listing.appendChild(document.createElement('a'));
+        //   link.href = '#';
+          link.className = 'title';
+        //   link.id = "link-" + prop.id;
+          link.innerHTML = prop.address;
+      
+
           
-          if (prop.phone) {
-            details.innerHTML += ' · ' + prop.phoneFormatted;
-          }
+          
         });
       }
-
-
-
 
     //on click for search button
     $("#search-button").on("click", function (event) {
@@ -117,6 +107,7 @@ $(document).ready(function () {
         //console logging
         console.log(locationName)
         // parks.push(locationName);
+        $("#listings").empty();
         buildLocationList();
 
     });
