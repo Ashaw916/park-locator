@@ -58,12 +58,12 @@ $(document).ready(function () {
 
             //add layer with locations
             map.addLayer({
-                "id": i,
+                "id": response[i].name,
                 "type": "symbol",
                 // Add a GeoJSON source containing place coordinates and information. 
                 "source": {
                     "type": "geojson",
-                    "data": parks
+                    "data": parks,
                     },
                 "layout": {
                     "icon-image": "marker-15",
@@ -72,7 +72,9 @@ $(document).ready(function () {
             });
             console.log(parks)
         }
-        buildLocationList();
+
+        buildLocationList(response);
+
         
     };
 
