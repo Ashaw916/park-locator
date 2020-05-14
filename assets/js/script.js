@@ -100,7 +100,9 @@ $(document).ready(function () {
                 link.innerHTML = prop.address;
               });
         }
+
         // buildLocationList(response);
+
         
     };
 
