@@ -66,14 +66,42 @@ $(document).ready(function () {
                     "data": parks,
                     },
                 "layout": {
-                    "icon-image": "marker-15",
+                    "icon-image": "park-15",
                     "icon-allow-overlap": true,
+                    "icon-size": 2,
                     }
             });
             console.log(parks)
+
+            parks.features.forEach(function(parks, i){
+                /**
+                 * Create a shortcut for `park.properties`,
+                 * which will be used several times below.
+                **/
+                var prop = parks.properties;
+            
+                /* Add a new listing section to the sidebar. */
+                var listings = document.getElementById('listings');
+                var listing = listings.appendChild(document.createElement('div'));
+                /* Assign a unique `id` to the listing. */
+                listing.id = "listing-" + prop.name;
+                /* Assign the `item` class to each listing for styling. */
+                listing.className = 'item';
+            
+                /* Add details to the individual listing. */
+                var details = listing.appendChild(document.createElement('div'));
+                details.innerHTML = prop.name;
+      
+                /* Add the link to the individual listing created above. */
+                var link = listing.appendChild(document.createElement('a'));
+              //   link.href = '#';
+                link.className = 'title';
+              //   link.id = "link-" + prop.id;
+                link.innerHTML = prop.address;
+              });
         }
 
-        buildLocationList(response);
+        // buildLocationList(response);
 
         
     };
@@ -114,36 +142,38 @@ $(document).ready(function () {
     //     }
     //  });
 
-    function buildLocationList(parks) {
-        parks.features.forEach(function(parks, i){
-          /**
-           * Create a shortcut for `park.properties`,
-           * which will be used several times below.
-          **/
-          var prop = parks.properties;
-      
-          /* Add a new listing section to the sidebar. */
-          var listings = document.getElementById('listings');
-          var listing = listings.appendChild(document.createElement('div'));
-          /* Assign a unique `id` to the listing. */
-          listing.id = "listing-" + prop.name;
-          /* Assign the `item` class to each listing for styling. */
-          listing.className = 'item';
-      
-          /* Add details to the individual listing. */
-          var details = listing.appendChild(document.createElement('div'));
-          details.innerHTML = prop.name;
 
-          /* Add the link to the individual listing created above. */
-          var link = listing.appendChild(document.createElement('a'));
-        //   link.href = '#';
-          link.className = 'title';
-        //   link.id = "link-" + prop.id;
-          link.innerHTML = prop.address;
-        });
-        //logging variables
-        console.log("buildLocationList" + prop,listings,listing,details);
-    };
+    // function buildLocationList(parks) {
+    //     parks.features.forEach(function(parks, i){
+    //       /**
+    //        * Create a shortcut for `park.properties`,
+    //        * which will be used several times below.
+    //       **/
+    //       var prop = parks.properties;
+      
+    //       /* Add a new listing section to the sidebar. */
+    //       var listings = document.getElementById('listings');
+    //       var listing = listings.appendChild(document.createElement('div'));
+    //       /* Assign a unique `id` to the listing. */
+    //       listing.id = "listing-" + prop.name;
+    //       /* Assign the `item` class to each listing for styling. */
+    //       listing.className = 'item';
+      
+    //       /* Add details to the individual listing. */
+    //       var details = listing.appendChild(document.createElement('div'));
+    //       details.innerHTML = prop.name;
+
+    //       /* Add the link to the individual listing created above. */
+    //       var link = listing.appendChild(document.createElement('a'));
+    //     //   link.href = '#';
+    //       link.className = 'title';
+    //     //   link.id = "link-" + prop.id;
+    //       link.innerHTML = prop.address;
+    //     });
+    //     //logging variables
+    //     console.log("buildLocationList" + prop,listings,listing,details);
+    // };
+
 
     // function flyToPark(currentFeature) {
     //     map.flyTo({
