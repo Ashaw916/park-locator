@@ -72,7 +72,9 @@ $(document).ready(function () {
             });
             console.log(parks)
         }
+
         buildLocationList(response);
+
         
     };
 
