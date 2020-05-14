@@ -140,6 +140,7 @@ $(document).ready(function () {
     //     }
     //  });
 
+
     // function buildLocationList(parks) {
     //     parks.features.forEach(function(parks, i){
     //       /**
@@ -170,6 +171,7 @@ $(document).ready(function () {
     //     //logging variables
     //     console.log("buildLocationList" + prop,listings,listing,details);
     // };
+
 
     // function flyToPark(currentFeature) {
     //     map.flyTo({
