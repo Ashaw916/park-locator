@@ -1,11 +1,31 @@
-/* body {
-   background-image: url('assets/image/park.png');
+
+/* body{
+    background-image:url("assets/image/trailfront.png");
     background-repeat: no-repeat;
+  } */
+  /* .start_button { 
+    height: 200px;
+    position: relative;
+    border: 3px solid green; 
+    margin-top: 400px;
+  } */
+  
+  .start_center {
+    margin:auto;
+    position: absolute;
+    top: 40%;
+    left: 30%;
+    right:30%;
+    background-color: rgb(59, 182, 59);
+    font-size:50px;
+    text-align: center;
+    color: black;
+  
+  }
     
-} */
 
 #header {
-    background-color: rgb(73, 116, 73);
+    background-color: green;
     margin: 0 0 1rem 0;
 }
 #header h1 {
