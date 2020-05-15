@@ -131,7 +131,9 @@ $(document).ready(function () {
                 console.log("Nothing found");
             }// end of else statement
             
+
         } //end of for loop
+
         
     };// end of geoJSON
 
@@ -152,6 +154,7 @@ $(document).ready(function () {
     map.on('load', function (e) {
 
     });
+
 
     // function buildLocationList(parks) {
     //     parks.features.forEach(function(parks, i){
@@ -190,6 +193,7 @@ $(document).ready(function () {
                 zoom: 15
             });
         };
+
 
     // function changeLocation() {
     //        //mapbox token
