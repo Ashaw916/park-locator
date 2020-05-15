@@ -10,7 +10,7 @@ $(document).ready(function () {
         var settings = {
             "async": true,
             "crossDomain": true,
-            "url": "https://trailapi-trailapi.p.rapidapi.com/?q[city_cont]=" + city + "&q[state_cont]=" + state + "&radius=25&q[country_cont]=" + country + "&limit=25",
+            "url": "https://trailapi-trailapi.p.rapidapi.com/?q[city_cont]=" + city + "&q[state_cont]=" + state + "&radius=25&q[country_cont]=united states&limit=25",
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "trailapi-trailapi.p.rapidapi.com",
@@ -37,72 +37,103 @@ $(document).ready(function () {
     function geoJSON(response) {
         // log data
         // console.log(response[i].lon,response[i].lat,response[i].name,response[i].city,response[i].country,response[i].state);
+
         //for loop to get data from response 
         for (var i = 0; i < response.length; i++) {
-            //var to hold park info
-            var parks={  
-                "type": "FeatureCollection",
-                "features": [{
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates":  [response[i].lon,response[i].lat]
-                    },
-                    "properties": {
-                        "name": response[i].name,
-                        "city": response[i].city,
-                        "country": response[i].country,
-                        "state": response[i].state
-                    }}
-                ]};
+            //if else statement to deal with empty array 
+            if ((response.length) !== 0){
+                //var to hold park info
+                var parks={  
+                    "type": "FeatureCollection",
+                    "features": [{
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates":  [response[i].lon,response[i].lat]
+                        },
+                        "properties": {
+                            "name": response[i].name,
+                            "city": response[i].city,
+                            "country": response[i].country,
+                            "state": response[i].state,
+                            // "url": response[i].activities[i].url
+                            // "activities": response[i].activities[i].attribs.["\"length\""]
+                            // "rating": response[i].activities[i].rating
+                            // "description": response[i].activities[i].description
+                            //"activity-type": response[i].activities[i].activity_type_name
+                            //"directions": response[i].directions
+                        }}
+                    ]}; // end of parks array
 
-            //add layer with locations
-            map.addLayer({
-                "id": response[i].name,
-                "type": "symbol",
-                // Add a GeoJSON source containing place coordinates and information. 
-                "source": {
-                    "type": "geojson",
-                    "data": parks,
-                    },
-                "layout": {
-                    "icon-image": "park-15",
-                    "icon-allow-overlap": true,
-                    "icon-size": 2,
-                    }
-            });
-            console.log(parks)
+                //add layer with locations
+                map.addLayer({
+                    "id": response[i].name,
+                    "type": "symbol",
+                    // Add a GeoJSON source containing place coordinates and information. 
+                    "source": {
+                        "type": "geojson",
+                        "data": parks,
+                        },
+                    "layout": {
+                        "icon-image": "park-15",
+                        "icon-allow-overlap": true,
+                        "icon-size": 2,
+                        }
+                }); // end of addLayer
 
-            parks.features.forEach(function(parks, i){
-                /**
-                 * Create a shortcut for `park.properties`,
-                 * which will be used several times below.
-                **/
-                var prop = parks.properties;
+                console.log(parks)
+
+                parks.features.forEach(function(parks, i){
+                    //  shortcut for `park.properties`,
+                    var prop = parks.properties;
+                
+                    // Add a new listing section to the sidebar.
+                    var listings = document.getElementById('listings');
+                    var listing = listings.appendChild(document.createElement('div'));
+                    //   Assign a unique `id` to the listing.
+                    listing.id = "listing-" + prop.name;
+                    // Assign the `item` class to each listing for styling. 
+                    listing.className = 'item';
+                
+                    // Add details to the individual listing. 
+                    var details = listing.appendChild(document.createElement('div'));
+                    details.innerHTML = prop.name;
             
-                /* Add a new listing section to the sidebar. */
-                var listings = document.getElementById('listings');
-                var listing = listings.appendChild(document.createElement('div'));
-                /* Assign a unique `id` to the listing. */
-                listing.id = "listing-" + prop.name;
-                /* Assign the `item` class to each listing for styling. */
-                listing.className = 'item';
+                    // Add the link to the individual listing created above. 
+                    var link = listing.appendChild(document.createElement('a'));
+                    //   link.href = '#';
+                    link.className = prop.url;
+                    //   link.id = "link-" + prop.id;
+                    link.innerHTML = prop.address;
+
+                    // url found at response.places[i].attribs.url
+                    
+
+                    // description found at response.places[i].attribs.description
+
+                    // rating found at response.places[i].attribs.rating
+
+                    // length found at response.places[i].attribs.length
+
+
+
+                }); //end of forEach function
+
+                    var coordinates = [response[0].lon,response[0].lat]
+                
+                    map.flyTo({
+                        center: coordinates,
+                        zoom: 9
+                    });
+
+            } // end of if statement
+            else {
+                console.log("Nothing found");
+            }// end of else statement
             
-                /* Add details to the individual listing. */
-                var details = listing.appendChild(document.createElement('div'));
-                details.innerHTML = prop.name;
-      
-                /* Add the link to the individual listing created above. */
-                var link = listing.appendChild(document.createElement('a'));
-              //   link.href = '#';
-                link.className = 'title';
-              //   link.id = "link-" + prop.id;
-                link.innerHTML = prop.address;
-              });
-        }
-        // buildLocationList(response);
+        } //end of for loop
         
-    };
+    };// end of geoJSON
 
     //mapbox token
     mapboxgl.accessToken = 'pk.eyJ1IjoicHJhYmhkZWVwIiwiYSI6ImNrOXp3aG9mYzBmMnMzamx0eDU5ZzRxd2IifQ.wkiG09WU_O8N0tVlzlb2tA';
@@ -121,46 +152,28 @@ $(document).ready(function () {
     map.on('load', function (e) {
 
     });
-    
-    // map.addSource('some id', {
-    //     type: 'geojson',
-    //     data: {
-    //         "type": "FeatureCollection",
-    //         "features": [{
-    //             "type": "Feature",
-    //             "properties": {},
-    //             "geometry": {
-    //                 "type": "Point",
-    //                 "coordinates": [
-    //                     -76.53063297271729,
-    //                     39.18174077994108
-    //                 ]
-    //             }
-    //         }]
-    //     }
-    //  });
 
     // function buildLocationList(parks) {
     //     parks.features.forEach(function(parks, i){
-    //       /**
+    //       //*
     //        * Create a shortcut for `park.properties`,
     //        * which will be used several times below.
-    //       **/
+    //       *
     //       var prop = parks.properties;
       
-    //       /* Add a new listing section to the sidebar. */
+    //       // Add a new listing section to the sidebar. 
     //       var listings = document.getElementById('listings');
     //       var listing = listings.appendChild(document.createElement('div'));
-    //       /* Assign a unique `id` to the listing. */
+    //       // Assign a unique `id` to the listing. 
     //       listing.id = "listing-" + prop.name;
-    //       /* Assign the `item` class to each listing for styling. */
+    //       // Assign the `item` class to each listing for styling. 
     //       listing.className = 'item';
       
-    //       /* Add details to the individual listing. */
+    //       // Add details to the individual listing. 
     //       var details = listing.appendChild(document.createElement('div'));
     //       details.innerHTML = prop.name;
 
-    //       /* Add the link to the individual listing created above. */
+    //       // Add the link to the individual listing created above. 
     //       var link = listing.appendChild(document.createElement('a'));
     //     //   link.href = '#';
     //       link.className = 'title';
@@ -171,12 +184,12 @@ $(document).ready(function () {
     //     console.log("buildLocationList" + prop,listings,listing,details);
     // };
 
-    // function flyToPark(currentFeature) {
-    //     map.flyTo({
-    //         center: currentFeature.geometry.coordinates,
-    //         zoom: 15
-    //     });
-    // };
+        function flyToPark(currentFeature) {
+            map.flyTo({
+                center: response[0].places.coordinates,
+                zoom: 15
+            });
+        };
 
     // function changeLocation() {
     //        //mapbox token
