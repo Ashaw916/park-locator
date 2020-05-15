@@ -1,5 +1,5 @@
 var response;
-
+var parksProp = [];
 $(document).ready(function () {
 
     //function to get the search location from the trails API
@@ -29,6 +29,7 @@ $(document).ready(function () {
             var array = response.places;
             //call geoJSON converter with array
             geoJSON(array)
+            flyToPark(response);
         });
 
     };
@@ -38,6 +39,7 @@ $(document).ready(function () {
         // log data
         // console.log(response[i].lon,response[i].lat,response[i].name,response[i].city,response[i].country,response[i].state);
 
+        console.log(response);
         //for loop to get data from response 
         for (var i = 0; i < response.length; i++) {
             //if else statement to deal with empty array 
@@ -56,14 +58,39 @@ $(document).ready(function () {
                             "city": response[i].city,
                             "country": response[i].country,
                             "state": response[i].state,
-                            // "url": response[i].activities[i].url
-                            // "activities": response[i].activities[i].attribs.["\"length\""]
-                            // "rating": response[i].activities[i].rating
-                            // "description": response[i].activities[i].description
-                            //"activity-type": response[i].activities[i].activity_type_name
-                            //"directions": response[i].directions
+                            "url": "",
+                            "length": "",
+                            "rating": "",
+                            "description": "",
+                            "activityType": "",
+                            "directions": "",
                         }}
                     ]}; // end of parks array
+
+                            var parksObj = {};
+                            if (response[i].activities.length > 0){
+                               
+                                parks.features[0].properties.url = response[i].activities[0].url;
+                                parks.features[0].properties.length = response[i].activities[0].attribs.length
+                                parks.features[0].properties.rating = response[i].activities[0].rating
+                                parks.features[0].properties.description = response[i].activities[0].description
+                                parks.features[0].properties.activityType = response[i].activities[0].activity_type_name
+                                parks.features[0].properties.directions = response[i].directions 
+                               
+                                
+                                parksObj.length = response[i].activities[0].attribs.length
+
+                                console.log("if statement works");
+                           }
+
+                           
+                            //"url": response[i].activities[0].url
+                            // "length": response[i].activities[0].attribs.["\"length\""]
+                            // "rating": response[i].activities[0].rating
+                            //"description": response[i].activities[0].description
+                            //"activity-type": response[i].activities[0].activity_type_name
+                            //"directions": response[i].directions                  
+                           parksProp.push(parksObj);
 
                 //add layer with locations
                 map.addLayer({
@@ -83,41 +110,7 @@ $(document).ready(function () {
 
                 console.log(parks)
 
-                parks.features.forEach(function(parks, i){
-                    //  shortcut for `park.properties`,
-                    var prop = parks.properties;
-                
-                    // Add a new listing section to the sidebar.
-                    var listings = document.getElementById('listings');
-                    var listing = listings.appendChild(document.createElement('div'));
-                    //   Assign a unique `id` to the listing.
-                    listing.id = "listing-" + prop.name;
-                    // Assign the `item` class to each listing for styling. 
-                    listing.className = 'item';
-                
-                    // Add details to the individual listing. 
-                    var details = listing.appendChild(document.createElement('div'));
-                    details.innerHTML = prop.name;
-            
-                    // Add the link to the individual listing created above. 
-                    var link = listing.appendChild(document.createElement('a'));
-                    //   link.href = '#';
-                    link.className = prop.url;
-                    //   link.id = "link-" + prop.id;
-                    link.innerHTML = prop.address;
 
-                    // url found at response.places[i].attribs.url
-                    
-
-                    // description found at response.places[i].attribs.description
-
-                    // rating found at response.places[i].attribs.rating
-
-                    // length found at response.places[i].attribs.length
-
-
-
-                }); //end of forEach function
 
                     var coordinates = [response[0].lon,response[0].lat]
                 
@@ -130,9 +123,37 @@ $(document).ready(function () {
             else {
                 console.log("Nothing found");
             }// end of else statement
+
+            parksProp.forEach(function(parks, i){
+                //  shortcut for `park.properties`,
             
+                // Add a new listing section to the sidebar.
+                var listings = document.getElementById('listings');
+                var listing = listings.appendChild(document.createElement('div'));
+                //   Assign a unique `id` to the listing.
+                listing.id = "listing-" + parks.name;
+                // Assign the `item` class to each listing for styling. 
+                listing.className = 'item';
+            
+                // Add details to the individual listing. 
+                var details = listing.appendChild(document.createElement('div'));
+                details.innerHTML = parks.name;
+        
+                // Add the link to the individual listing created above. 
+                var link = listing.appendChild(document.createElement('a'));
+                //   link.href = '#';
+                link.className = parks.url;
+                //   link.id = "link-" + prop.id;
+                link.innerHTML = parks.address;
+    
+                // add code to expand displayed info
+    
+    
+    
+            }); //end of forEach function
 
         } //end of for loop
+
 
         
     };// end of geoJSON
@@ -187,10 +208,11 @@ $(document).ready(function () {
     //     console.log("buildLocationList" + prop,listings,listing,details);
     // };
 
-        function flyToPark(currentFeature) {
+        function flyToPark(response) {
+            console.log(response);
             map.flyTo({
-                center: response[0].places.coordinates,
-                zoom: 15
+                center: response.places[0].coordinates,
+                zoom: 9
             });
         };
 
@@ -221,8 +243,8 @@ $(document).ready(function () {
         //calling funtion with split search term
         getSearchLoc(locationParts[2],locationParts[1],locationParts[0]);
         //calling 
-        geoJSON(response);
-        flyToPark();
+        
+  
     });
 
 
