@@ -1,5 +1,6 @@
 var response;
 var layerNames = [];
+var desc = [];
 $(document).ready(function () {
 
 var trails={  
@@ -94,7 +95,8 @@ var trails={
                 if (response[i].activities[1]) {
                      trails.features[0].properties.activityType2 = response[i].activities[1].activity_type_name + ", ";
                 }// end of if (3)
-                console.log(trails.features[0].properties.description);
+                
+                desc.push(response[i].description);
                 //add layers with locations
                 map.addLayer({
                     "id": response[i].name,
@@ -183,9 +185,10 @@ var trails={
                         new mapboxgl.Popup(this)
                         .setLngLat(mapCoord.split(","))
                         .setHTML(this.textContent)
+                        // .setHTML(desc)
                         .addTo(map);
 
-                        console.log(this.parentElement.childNodes[2].childNodes[4].textContent);
+                        // console.log(this.parentElement.childNodes[2].childNodes[4].textContent);
                     
 
                        var activeItem = document.getElementsByClassName('active');
@@ -214,14 +217,14 @@ var trails={
                     var length = propList.appendChild(document.createElement('li'));
                     var Type1 = propList.appendChild(document.createElement('li'));
                     var coord = propList.appendChild(document.createElement('li'));
-                    var desc = propList.appendChild(document.createElement('li'));
+                    
                     
 
                     rating.append("Rating: " + prop.rating + " ");
                     length.append("Length: " + prop.trailLength + " mi.");
                     Type1.append("Type: " + prop.activityType2 + " " +  prop.activityType1);
                     coord.append(trails.geometry.coordinates);
-                    desc.append(prop.description);
+                    
 
 
 
