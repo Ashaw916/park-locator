@@ -1,29 +1,34 @@
 var response;
 var layerNames = [];
-// var trails={  
-//     "type": "FeatureCollection",
-//     "features": [{
-//         "type": "Feature",
-//         "geometry": {
-//             "type": "Point",
-//             "coordinates":  []
-//         },
-//         "properties": {
-//             "name": "",
-//             "city": "",
-//             "country": "",
-//             "state": "",
-//             "url": "",
-//             "trailLength": "",
-//             "rating": "",
-//             "description": "",
-//             "activityType": "",
-//             "directions": "",
-//         }}
-// ]}; // end of trails array
-
 $(document).ready(function () {
 
+var trails={  
+    "type": "FeatureCollection",
+    "features": [{
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates":  []
+        },
+        "properties": {
+            "name": "",
+            "city": "",
+            "country": "",
+            "state": "",
+            "url": "",
+            "trailLength": "",
+            "rating": "",
+            "description": "",
+            "activityType1": "",
+            "activityType2": "",
+            "directions": "",
+        }}
+    ]}; // end of trails array
+
+
+
+
+//****** API Call*/
     //function to get the search location from the trails API
     function getSearchLoc(country,state,city){
         //logging search input
@@ -56,71 +61,44 @@ $(document).ready(function () {
 
     };
    
-// *********** fucntion to convert response to geoJSON format, store in array, and populate sidebar
+//*********** fucntion to convert response to geoJSON format, store in array, and populate sidebar
     function geoJSON(response) {
-        // log data
-        // console.log(response[i].lon,response[i].lat,response[i].name,response[i].city,response[i].country,response[i].state);
-
+ 
         // console.log(response);
+
     //*** for loop to get data from response 
         for (var i = 0; i < response.length; i++) {
             layerNames.push(response[i].name);
+            console.log("layerNames" + layerNames[i]);
             
         //*** if else statement to deal with empty array 
             if ((response.length) !== 0){
-                //var to hold park info
-                
-                var trails={  
-                    "type": "FeatureCollection",
-                    "features": [{
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates":  []
-                        },
-                        "properties": {
-                            "name": "",
-                            "city": "",
-                            "country": "",
-                            "state": "",
-                            "url": "",
-                            "trailLength": "",
-                            "rating": "",
-                            "description": "",
-                            "activityType1": "",
-                            "activityType2": "",
-                            "directions": "",
-                        }}
-                    ]}; // end of trails array
-
-                // adding location data to array
+                // adding location data to object
                 trails.features[0].geometry.coordinates = [response[i].lon,response[i].lat]
                 trails.features[0].properties.name = response[i].name
                 trails.features[0].properties.city = response[i].city
                 trails.features[0].properties.country = response[i].country
                 trails.features[0].properties.state = response[i].state
-                    console.log(response[i].name);  
-                    
+
                 // if statement to deal with inconsistant response objects info
                 if (response[i].activities.length > 0){
-                    
                     trails.features[0].properties.url = response[i].activities[0].url;
                     trails.features[0].properties.trailLength = response[i].activities[0].length;
                     trails.features[0].properties.rating = response[i].activities[0].rating;
-                    trails.features[0].properties.description = response[i].activities[0].description;
+                    trails.features[0].properties.description = response[i].description;
                     trails.features[0].properties.activityType1 = response[i].activities[0].activity_type_name;
                     trails.features[0].properties.directions = response[i].directions;
-                    // console.log("if statement works");
                 } // end of if(2)       
 
                 // if statement to deal with inconsistant response objects activity names
                 if (response[i].activities[1]) {
                      trails.features[0].properties.activityType2 = response[i].activities[1].activity_type_name + ", ";
                 }// end of if (3)
-
+                console.log(trails.features[0].properties.description);
                 //add layers with locations
                 map.addLayer({
                     "id": response[i].name,
+                    "class": "places",
                     "type": "symbol",
                     // Add a GeoJSON source containing place coordinates and information. 
                     "source": {
@@ -134,13 +112,15 @@ $(document).ready(function () {
                         }
                 }); // end of addLayer
 
-                // console.log(trails);
+                
+
+                console.log(trails);
                 
             //*** if else statement to deal with missing coordinates
                 // get coordinates of first array item
                 if (response[0].lon != 0) {
                     var coordinates1 = [response[0].lon,response[0].lat]
-
+                    
                     //center map on first array item
                     map.flyTo({
                         center: coordinates1,
@@ -186,6 +166,38 @@ $(document).ready(function () {
                     var details = listing.appendChild(document.createElement('h4'));
                     details.className = "search-item";
                     details.innerHTML = prop.name;
+                    details.addEventListener("click", function(){
+                        // document.getElementsByClassName("listing").style.cursor = "pointer";
+                        var locationName = (this.textContent);
+                        //console logging
+                        console.log(locationName);
+                       
+                        var mapCoord = this.parentElement.childNodes[2].childNodes[3].textContent
+                        map.flyTo({
+                            center: mapCoord.split(","),
+                            zoom: 15,
+                            
+                        });
+                        
+
+                        new mapboxgl.Popup(this)
+                        .setLngLat(mapCoord.split(","))
+                        .setHTML(this.textContent)
+                        .addTo(map);
+
+                        console.log(this.parentElement.childNodes[2].childNodes[4].textContent);
+                    
+
+                       var activeItem = document.getElementsByClassName('active');
+                       if (activeItem[0]) {
+                       activeItem[0].classList.remove('active');
+                       }
+                       this.parentNode.classList.add('active');
+           
+           
+                      
+
+                    })
             
                     // Add the link to the individual listing created above. 
                     var link = listing.appendChild(document.createElement('a'));
@@ -195,16 +207,22 @@ $(document).ready(function () {
                     .attr("href", prop.url)
                     .attr("target", "_blank");
                     //   link.id = "link-" + prop.id;
-                    link.text = "link";
+                    link.text = "Website";
 
                     var propList = listing.appendChild(document.createElement('ul'));
                     var rating = propList.appendChild(document.createElement('li'));
                     var length = propList.appendChild(document.createElement('li'));
                     var Type1 = propList.appendChild(document.createElement('li'));
+                    var coord = propList.appendChild(document.createElement('li'));
+                    var desc = propList.appendChild(document.createElement('li'));
+                    
 
                     rating.append("Rating: " + prop.rating + " ");
                     length.append("Length: " + prop.trailLength + " mi.");
                     Type1.append("Type: " + prop.activityType2 + " " +  prop.activityType1);
+                    coord.append(trails.geometry.coordinates);
+                    desc.append(prop.description);
+
 
 
             }); //end of forEach function
@@ -238,12 +256,14 @@ $(document).ready(function () {
         mapboxgl: mapboxgl
     }))
 
-    map.on('load', function() {
+    map.on('load', function(layers) {
+        
+
         // When a click event occurs on a feature in the places layer, open a popup at the
         // location of the feature, with description HTML from its properties.
-        map.on('click', 'trails', function(e) {
-            var coordinates = e.features[0].geometry.coordinates.slice();
-            var description = e.features[0].properties.description;
+        map.on('click', 'places', function(e) {
+            var coordinates = trails.features[0].geometry.split(",");
+            var description = trils.features[0].properties.description;
         
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
@@ -264,7 +284,7 @@ $(document).ready(function () {
         });
         
         // Change it back to a pointer when it leaves.
-        map.on('mouseleave', 'places', function() {
+        map.on('mouseleave', layerNames[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19], function() {
             map.getCanvas().style.cursor = '';
         });
     });
@@ -303,7 +323,8 @@ $(document).ready(function () {
             var locationParts = locationName.split(", ");
             //calling funtion with split search term
             getSearchLoc(locationParts[2],locationParts[1],locationParts[0]);
-            var trails = {};
+            
+            console.log(trails);
         }
 
     }); //end of key up
@@ -312,57 +333,39 @@ $(document).ready(function () {
 
 
     $(".search-item").on("click", function (event) {
-        // var locationName = $("#search-input").val();
-        // //clear search field
-        // $("#search-input").val("");
-        // //console logging
-        // console.log(locationName.split(","))
-        // //clear side bar
-        // $("#listings").empty();
-        // // array to hold search input
-        // var locationParts = locationName.split(", ");
-        // //calling funtion with split search term
-        // getSearchLoc(locationParts[2],locationParts[1],locationParts[0]);
-        // //calling 
+        document.getElementsByClassName("listing").style.cursor = "pointer";
+        var locationName = $("#search-input").val();
+        //clear search field
+        $("#search-input").val("");
+        //console logging
+        console.log(locationName.split(","))
+        //clear side bar
+        $("#listings").empty();
+        // array to hold search input
+        var locationParts = locationName.split(", ");
+        //calling funtion with split search term
+        getSearchLoc(locationParts[2],locationParts[1],locationParts[0]);
+        //calling 
         console.log("works");
   
     });//end of on.click
 
 
-    var item = document.getElementsByClassName("sidebar");
-    item.children.addEventListener("click", function(event) {
+    
 
-        console.log("item");
-    });
+
+    // window.onload = function () {
+    //     x = document.getElementById("listings").childNodes;
+    //     for (var i = 0; i < x.length; i++) {
+    //         x[i].attr("type", "text");
+    //     }
+    // };
 
     //event listener for search result items
 
-        // $("button").onclick = function(){
-            // var clickedListing = trails.features[this.dataPosition];
-            // console.log("works");
-            
-            //     map.flyTo({
-            //         center: clickedListing,
-            //         zoom: 15
-            //     });
-            // var activeItem = document.getElementsByClassName('active');
-            // if (activeItem[0]) {
-            // activeItem[0].classList.remove('active');
-            // }
-            // this.parentNode.classList.add('active');
+        $("button").onclick = function(){
 
-
-                // pop up fucntion
-            // var popUps = document.getElementsByClassName('mapboxgl-popup');
-            // /** Check if there is already a popup on the map and if so, remove it */
-            // if (popUps[0]) popUps[0].remove();
-            
-            // var popup = new mapboxgl.Popup({ closeOnClick: false })
-            // .setLngLat(currentFeature.geometry.coordinates)
-            // .setHTML('<h3>Sweetgreen</h3>' +
-            // '<h4>' + currentFeature.properties.address + '</h4>')
-            // .addTo(map);
-        // };
+        };
 
 
 
