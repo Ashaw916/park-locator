@@ -224,6 +224,8 @@ var trails={
                     length.append("Length: " + prop.trailLength + " mi.");
                     Type1.append("Type: " + prop.activityType2 + " " +  prop.activityType1);
                     coord.append(trails.geometry.coordinates);
+
+                    propList.className = "propList"
                     
 
 
@@ -259,38 +261,6 @@ var trails={
         mapboxgl: mapboxgl
     }))
 
-    map.on('load', function(layers) {
-        
-
-        // When a click event occurs on a feature in the places layer, open a popup at the
-        // location of the feature, with description HTML from its properties.
-        map.on('click', 'places', function(e) {
-            var coordinates = trails.features[0].geometry.split(",");
-            var description = trils.features[0].properties.description;
-        
-        // Ensure that if the map is zoomed out such that multiple
-        // copies of the feature are visible, the popup appears
-        // over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-        
-        new mapboxgl.Popup()
-            .setLngLat(coordinates)
-            .setHTML(description)
-            .addTo(map);
-        });
-        
-        // Change the cursor to a pointer when the mouse is over the places layer.
-        map.on('mouseenter', 'places', function() {
-            map.getCanvas().style.cursor = 'pointer';
-        });
-        
-        // Change it back to a pointer when it leaves.
-        map.on('mouseleave', layerNames[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19], function() {
-            map.getCanvas().style.cursor = '';
-        });
-    });
 
 // *********** event listeners
 
@@ -352,25 +322,6 @@ var trails={
         console.log("works");
   
     });//end of on.click
-
-
-    
-
-
-    // window.onload = function () {
-    //     x = document.getElementById("listings").childNodes;
-    //     for (var i = 0; i < x.length; i++) {
-    //         x[i].attr("type", "text");
-    //     }
-    // };
-
-    //event listener for search result items
-
-        $("button").onclick = function(){
-
-        };
-
-
 
     // map.on('click', function(e) {
     // /* Determine if a feature in the "locations" layer exists at that point. */ 

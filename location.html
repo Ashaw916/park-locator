@@ -7,62 +7,50 @@
     <!--foundation link-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/css/foundation.min.css"
         integrity="sha256-ogmFxjqiTMnZhxCqVmcqTvjfe1Y/ec4WaRj/aQPvn+I=" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="./assets/css/data.css">
     <!--css style sheet-->
     <link type="text/css" rel="stylesheet" href="./assets/css/style.css">
-    <link type="text/css" rel="stylesheet" href="./assets/css/data.css">
     <!--favicon item-->
     <link rel="shortcut icon" type="image/png" href="assets/image/trail.png">
     <!--font awesome link-->
     <script src="https://kit.fontawesome.com/3358e17eaa.js" crossorigin="anonymous"></script>
     <!--mapbox link-->
-
     <script src='https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css' rel='stylesheet' />
     <!--title of page-->
     <title>Trail Locator</title>
 </head>
-<!--body start here-->
 
-<body style="background-color:lemonchiffon;">
-    <div class="container">
+<!--body starts here-->
+<body >
+    <div class="container align-center">
 
-        <div class="wrap">
-
-            <div class="row"></div>
             <!--heading div-->
-            <div id="header" class="columns small-12 text-center">
+            <div id="header" class="columns " style="background-image: url('assets/image/trailfront.jpg');">
                 <!--heading-->
-                <h1>Trail Locator</h1>
+                <h1 id="heading-text" class=" text-center" >Trail Locator</h1>
             </div>
+      
 
-        </div>
+        <div class="row grid-x  align-center" >
 
-        <!--seach bar-->
-       <!-- <div class="search">
-
-            <ul class="menu align-center">
-                input bar
-                <li><input id="search-input" type="search" placeholder="City, State, Country"> 
-                search button
-                <li><button id="search-button" type="button" class="button"><i
-                    class="fas fa-search-location"> Find Trails</i></button></li>
-            </ul>
-
-        </div> -->
-
-        <!-- sidebar and filter btns -->
-        <div id="sidebar" class='sidebar pad2'>
-            <p id="loc-info">Location information</p>
-            <hr>
-
-            <div id="listings">
-
-            </div>
             <!--map placeholder-->
-            <div id='map' class='map pad2'>Map</div>
+            <div id='map' class='map pad2 columns'>Map</div>
+
+            <div class="row grid-x align align-center">
+                <!-- sidebar and filter btns -->
+                <div id="sidebar" class='sidebar pad2 columns align-center' >
+
+                    <p id="loc-info" class="">Location information</p>
+                    <!-- div for listings -->
+                    <div id="listings" class="medium-unstack"></div>
+
+                </div>
+
+            </div>
+
+
         </div>
-
-
 
     </div>
 

@@ -1,36 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--font awesome link-->
-    <script src="https://kit.fontawesome.com/3358e17eaa.js" crossorigin="anonymous"></script>
-    <!--css file link-->
-    <link type="text/css" rel="stylesheet" href="./assets/css/style.css">
-    <!--foundation link-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/css/foundation.min.css"
-        integrity="sha256-ogmFxjqiTMnZhxCqVmcqTvjfe1Y/ec4WaRj/aQPvn+I=" crossorigin="anonymous">
-    <!--favicon item-->
-    <link rel="shortcut icon" type="image/png" href="assets/image/trail.png">
-    <title>Trail Locator</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--foundation link-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/css/foundation.min.css"
+            integrity="sha256-ogmFxjqiTMnZhxCqVmcqTvjfe1Y/ec4WaRj/aQPvn+I=" crossorigin="anonymous">
+        <link type="text/css" rel="stylesheet" href="./assets/css/data.css">
+        <!--css style sheet-->
+        <link type="text/css" rel="stylesheet" href="./assets/css/style.css">
+        <!--favicon item-->
+        <link rel="shortcut icon" type="image/png" href="assets/image/trail.png">
+        <!--font awesome link-->
+        <script src="https://kit.fontawesome.com/3358e17eaa.js" crossorigin="anonymous"></script>
+        <!--mapbox link-->
+        <script src='https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css' rel='stylesheet' />
+        <!--title of page-->
+        <title>Trail Locator</title>
+    </head>
 
-<body style="background-image: url('assets/image/trailfront.jpg');">
-    <div class="wrap">
+<!--body starts here-->
+<body style="background-image: url('assets/image/trailfront.jpg');" >
 
-        <div class="row"></div>
+    <!-- container -->
+    <div class="container align-center">
+
         <!--heading div-->
-        <div id="header" class="columns small-12 text-center">
+        <div id="header" class="columns " style="background-image: url('assets/image/trailfront.jpg');">
             <!--heading-->
-            <h1>Trail Locator</h1>
+            <h1 id="heading-text" class=" text-center" >Trail Locator</h1>
         </div>
 
     </div>
-    <div class="start_button">
-        <div class="start_center">
-            <button><a class="start" href="location.html">Start Location</a></button>
-        </div>
+
+    <!-- div for start button -->
+    <div class="row start_button align-justify  flex-container">
+        <!-- start button -->
+        <button><a class="start_center  " href="location.html"><span id="btn-txt"></span>Search Trails</a></button>
+ 
     </div>
 </body>
 
